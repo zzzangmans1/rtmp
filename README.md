@@ -1,4 +1,6 @@
-# rtmp
+# Media Solution Server
+
+## rtmp
 rtmp kali linux server build
 
 **sudo apt install nginx**
