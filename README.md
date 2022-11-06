@@ -66,3 +66,4 @@ Check the nginx server
 ```
 
 이제 웹사이트에서 flash 를 지원하지 않아 rmtp로 받아도 재생시킬수가 없다......
+그래서 hls 도전중
