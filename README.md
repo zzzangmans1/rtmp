@@ -55,6 +55,71 @@ make && make install
 nginx -v
 ```
 
+## 스트리밍 서버 구성
+
+```
+cd /etc/nginx
+```
+
+기본 Nginx 구성 파일 백업
+```
+mv nginx.conf nginx.conf.old
+```
+새 구성파일 만들기
+```
+nano nginx.conf
+```
+
+이 구성을 구성 파일에 추가
+```
+user www-data;
+worker_processes auto;
+worker_rlimit_nofile 8192;
+pid /run/nginx.pid;
+rtmp_auto_push on;
+
+events {
+    worker_connections 4096;
+}
+
+rtmp {
+    server {
+        listen 1935;
+        chunk_size 4096;
+        max_message 1M;
+
+        application streaming {
+            live on;
+            hls on;
+            hls_nested on;
+            hls_path /etc/nginx/live;
+
+            hls_fragment 6s;
+            hls_playlist_length 30s;
+        }
+    }
+}
+
+http {
+    server {
+        listen 8080;
+        root /etc/nginx;
+
+        location /live {
+            types {
+                application/vnd.apple.mpegurl m3u8;
+                video/mp2t ts;
+            }
+            add_header Cache-Control no-cache;
+        }
+    }
+}
+
+```
+구성 완료후 
+```
+nginx -t
+```
 ## rtmp
 rtmp kali linux server build
 
