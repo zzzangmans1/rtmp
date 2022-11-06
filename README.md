@@ -25,3 +25,6 @@ rtmp {
 
 **sudo systemctl restart nginx**
 
+Check if the service is open with systemctl
+
+<img width="318" alt="image" src="https://user-images.githubusercontent.com/52357235/200170022-5d91d517-7896-48a9-bee8-812026dc2faa.png">
