@@ -36,3 +36,33 @@ Check the nginx server
 127.0.0.1/index.nginx-debian.html access to homepage
 
 <img width="918" alt="image" src="https://user-images.githubusercontent.com/52357235/200170671-949d3161-2890-4b4a-bead-922b09566b72.png">
+
+
+
+``` html
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+  <link href="https://unpkg.com/video.js/dist/video-js.css" rel="stylesheet">
+</head>
+<body>
+  <video id="my_video_1" class="video-js vjs-default-skin" controls preload="auto" width="640" height="360"
+  data-setup='{}'>
+    <source src="rtmp://192.168.0.13/live/stream" type="rtmp/flv">
+  </video>
+
+  <video id="my_video_2" class="video-js vjs-default-skin" controls preload="auto" width="640" height="360"
+  data-setup='{}'>
+    <source src="http://192.168.0.13:8080/hls/stream.m3u8" type="application/x-mpegURL">
+  </video>
+
+  <script src="https://unpkg.com/video.js/dist/video.js"></script>
+  <script src="https://unpkg.com/videojs-flash/dist/videojs-flash.js"></script>
+  <script src="https://unpkg.com/videojs-contrib-hls/dist/videojs-contrib-hls.js"></script>
+
+</body>
+</html>
+```
+
+이제 
