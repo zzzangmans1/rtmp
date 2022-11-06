@@ -1,5 +1,60 @@
 # Media Solution Server
 
+## Nginx install
+
+[참고 사이트](https://facsiaginsa.com/nginx/adaptive-bitrate-streaming-server-nginx-ubuntu) </br>
+
+Nginx 종속성 설치
+
+```
+apt update && apt install build-essential git libpcre3-dev libssl-dev zlib1g-dev
+```
+
+Nginx 소스 코드 다운로드 후 압축풀기
+
+```
+wget http://nginx.org/download/nginx-1.20.2.tar.gz
+tar -zxvf nginx-1.20.2.tar.gz
+```
+
+RTMP 모듈 다운로드
+
+```
+wget https://codeload.github.com/arut/nginx-rtmp-module/tar.gz/refs/tags/v1.2.2
+tar -zxvf v1.2.2
+```
+
+Nginx 빌드 및 설치
+
+```
+cd nginx-1.20.2
+```
+
+module 빌드
+```
+./configure \ 
+    --prefix=/etc/nginx \ 
+    --conf-path=/etc/nginx/nginx.conf \ 
+    --error-log-path=/var/log/nginx/error.log \ 
+    --http -log-path=/var/log/nginx/access.log \ 
+    --pid-path=/run/nginx.pid \ 
+    --sbin-path=/usr/sbin/nginx \ 
+    --with-http_ssl_module \ 
+    -- with-http_v2_module \ 
+    --with-http_stub_status_module \ 
+    --with-http_realip_module \ 
+    --with-file-aio \ 
+    --with-threads \ 
+    --with-stream \
+    --add-module=../nginx-rtmp-module-1.2.2
+```
+
+```
+make && make install
+
+nginx -v
+```
+
 ## rtmp
 rtmp kali linux server build
 
