@@ -120,6 +120,122 @@ http {
 ```
 nginx -t
 ```
+
+## systemctl 에 Nginx 등록
+
+systemd 폴더에 새 파일을 만듭니다.
+```
+vi /lib/systemd/system/nginx.service
+```
+
+이 구성 파일을 복사하여 파일에 붙여넣습니다.
+
+```
+[Unit]
+Description=Nginx Custom From Source
+After=syslog.target network-online.target remote-fs.target nss-lookup.target
+Wants=network-online.target
+
+[Service]
+Type=forking
+PIDFile=/run/nginx.pid
+ExecStartPre=/usr/sbin/nginx -t
+ExecStart=/usr/sbin/nginx
+ExecReload=/usr/sbin/nginx -s reload
+ExecStop=/bin/kill -s QUIT $MAINPID
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
+```
+
+시스템을 다시 로드
+```
+systemctl daemon-reload
+```
+
+서버가 부팅될 때 자동으로 시작되도록 Nginx 서비스를 활성화합니다.
+
+```
+systemctl enable nginx
+```
+
+service를 사용하여 Nginx 제어
+
+```
+service nginx start
+service nginx reload
+service nginx stop
+service nginx restart
+```
+
+nginx 시작
+
+```
+service nginx start
+```
+
+## 적응형 비트 전송률 구성
+
+ffmpeg 설치
+
+```
+apt install ffmpeg
+```
+
+nginx 디렉토리 들어가기
+
+```
+cd /etc/nginx
+```
+
+nginx.conf 구성 파일의 rtmp 블록 코드 수정
+
+```
+rtmp {
+    server {
+        listen 1935;
+        chunk_size 4096;
+        max_message 1M;
+    
+        application streaming {
+            live on;
+
+            exec ffmpeg -i rtmp://localhost/streaming/$name
+              -c:a aac -b:a 32k  -c:v libx264 -b:v 128K -f flv rtmp://localhost/hls/$name_low
+              -c:a aac -b:a 64k  -c:v libx264 -b:v 256k -f flv rtmp://localhost/hls/$name_mid
+              -c:a aac -b:a 128k -c:v libx264 -b:v 512K -f flv rtmp://localhost/hls/$name_hi;
+        }
+
+        application hls {
+            live on;
+            hls on;
+            hls_path /etc/nginx/live;
+            hls_nested on;
+
+            hls_fragment 6s;
+            hls_playlist_length 30s;
+
+            hls_variant _low BANDWIDTH=160000;
+            hls_variant _mid BANDWIDTH=320000;
+            hls_variant _hi  BANDWIDTH=640000;
+        }
+    }
+}
+```
+
+nginx 구성 완료 후 테스트
+
+```
+nginx -t
+```
+
+그런다음 nginx reload
+
+```
+service nginx reload
+```
+
 ## rtmp
 rtmp kali linux server build
 
