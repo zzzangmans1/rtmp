@@ -185,3 +185,26 @@ OBS에서 스트리밍 주소 세팅합니다.
 <img width="416" alt="image" src="https://user-images.githubusercontent.com/52357235/200564698-04cd99ac-f2a8-4124-8085-e9a7c26f262a.png">
 
 <img width="668" alt="image" src="https://user-images.githubusercontent.com/52357235/200565018-aa2d3b87-641a-4322-ae4c-d652386e3a18.png">
+
+
+## hls 로 변환하여 VLC로 실행
+
+/etc/nginx/nginx.conf 에서 
+rtmp 부분
+
+```
+application live {
+                        live on;
+                        record off;
+               		
+			#HLS
+			hls on;
+                        hls_path /etc/nginx/live;
+                        hls_fragment 3;
+                        hls_playlist_length 60;
+
+                        dash on;
+                        dash_path /var/www/html/stream/dash;
+		 }
+```
+
