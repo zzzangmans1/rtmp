@@ -88,7 +88,7 @@ rtmp {
         chunk_size 4096;
         max_message 1M;
 
-        application streaming {
+        application live {
             live on;
             hls on;
             hls_nested on;
