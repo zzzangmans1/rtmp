@@ -231,3 +231,43 @@ server {
 <img width="520" alt="image" src="https://user-images.githubusercontent.com/52357235/200567775-fc77081d-345b-421a-97b7-d0a96aa99d4a.png">
 
 <img width="1277" alt="image" src="https://user-images.githubusercontent.com/52357235/200567245-3b35b271-cd64-430c-b8f3-94e35d90d21b.png">
+
+
+## (OBS) rtmp -> (WEB)HLS : (ANDROID)HLS [PLAYER_ANDROID]
+
+웹사이트에서 HLS 재생코드
+```
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>hls.js</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+</head>
+<body>
+<video controls autoplay id="video-player"></video>
+<script>
+	var video = document.getElementById('video-player');
+	var videoSrc = 'http://{m3u8의 주소}.m3u8';
+	//
+	// First check for native browser HLS support
+	//
+	if (video.canPlayType('application/vnd.apple.mpegurl')) {
+		video.src = videoSrc;
+		//
+		// If no native HLS support, check if hls.js is supported
+		//
+	} else if (Hls.isSupported()) {
+		var hls = new Hls();
+		hls.loadSource(videoSrc);
+		hls.attachMedia(video);
+	}
+</script>
+</body>
+</html>
+```
+
+![image](https://user-images.githubusercontent.com/52357235/200588545-8324f99d-b382-47fb-b2b9-1368b174a41a.png)
+
+<img width="464" alt="image" src="https://user-images.githubusercontent.com/52357235/200588631-d042d340-8848-4835-a50a-a8198d1c21cf.png">
