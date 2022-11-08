@@ -208,3 +208,21 @@ application live {
 		 }
 ```
 
+그리고 http 부분
+
+```
+server {
+		listen 8080;
+		root /etc/nginx;
+		
+		location /live {
+			types {
+				application/vnd.apple.mpegurl m3u8;
+				video/mp2t ts;
+			}
+			add_header Cache-Control no-cache;
+		}
+	}
+```
+
+<img width="1277" alt="image" src="https://user-images.githubusercontent.com/52357235/200567245-3b35b271-cd64-430c-b8f3-94e35d90d21b.png">
