@@ -175,131 +175,13 @@ nginx 시작
 service nginx start
 ```
 
-## 적응형 비트 전송률 구성
+OBS에서 스트리밍 주소 세팅합니다.
 
-ffmpeg 설치
+![image](https://user-images.githubusercontent.com/52357235/200564494-f640c991-d4a8-4eef-9941-c8c512bcd3a8.png)
 
-```
-apt install ffmpeg
-```
+![image](https://user-images.githubusercontent.com/52357235/200565056-19ad826e-9b5f-4055-8e66-1f81b266f1ce.png)
+그리고 VLC 에서 주소를 불러와 재생합니다.
 
-nginx 디렉토리 들어가기
+<img width="416" alt="image" src="https://user-images.githubusercontent.com/52357235/200564698-04cd99ac-f2a8-4124-8085-e9a7c26f262a.png">
 
-```
-cd /etc/nginx
-```
-
-nginx.conf 구성 파일의 rtmp 블록 코드 수정
-
-```
-rtmp {
-    server {
-        listen 1935;
-        chunk_size 4096;
-        max_message 1M;
-    
-        application streaming {
-            live on;
-
-            exec ffmpeg -i rtmp://localhost/streaming/$name
-              -c:a aac -b:a 32k  -c:v libx264 -b:v 128K -f flv rtmp://localhost/hls/$name_low
-              -c:a aac -b:a 64k  -c:v libx264 -b:v 256k -f flv rtmp://localhost/hls/$name_mid
-              -c:a aac -b:a 128k -c:v libx264 -b:v 512K -f flv rtmp://localhost/hls/$name_hi;
-        }
-
-        application hls {
-            live on;
-            hls on;
-            hls_path /etc/nginx/live;
-            hls_nested on;
-
-            hls_fragment 6s;
-            hls_playlist_length 30s;
-
-            hls_variant _low BANDWIDTH=160000;
-            hls_variant _mid BANDWIDTH=320000;
-            hls_variant _hi  BANDWIDTH=640000;
-        }
-    }
-}
-```
-
-nginx 구성 완료 후 테스트
-
-```
-nginx -t
-```
-
-그런다음 nginx reload
-
-```
-service nginx reload
-```
-
-## rtmp
-rtmp kali linux server build
-
-**sudo apt install nginx**
-
-**sudo apt install libnginx-mod-rtmp**
-
-**sudo nano /etc/nginx/nginx.conf**
-
-insert text below 
-
-```
-rtmp {
-  server {
-    listen 1935;
-    chunk_size 4096;
-    
-    application live {
-      live on;
-      record off;
-    }
-  }
-}
-```
-
-**sudo systemctl restart nginx**
-
-Check if the service is open with systemctl
-
-<img width="318" alt="image" src="https://user-images.githubusercontent.com/52357235/200170022-5d91d517-7896-48a9-bee8-812026dc2faa.png">
-
-Check the nginx server
-
-127.0.0.1/index.nginx-debian.html access to homepage
-
-<img width="918" alt="image" src="https://user-images.githubusercontent.com/52357235/200170671-949d3161-2890-4b4a-bead-922b09566b72.png">
-
-
-
-``` html
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset=utf-8 />
-  <link href="https://unpkg.com/video.js/dist/video-js.css" rel="stylesheet">
-</head>
-<body>
-  <video id="my_video_1" class="video-js vjs-default-skin" controls preload="auto" width="640" height="360"
-  data-setup='{}'>
-    <source src="rtmp://192.168.0.13/live/stream" type="rtmp/flv">
-  </video>
-
-  <video id="my_video_2" class="video-js vjs-default-skin" controls preload="auto" width="640" height="360"
-  data-setup='{}'>
-    <source src="http://192.168.0.13:8080/hls/stream.m3u8" type="application/x-mpegURL">
-  </video>
-
-  <script src="https://unpkg.com/video.js/dist/video.js"></script>
-  <script src="https://unpkg.com/videojs-flash/dist/videojs-flash.js"></script>
-  <script src="https://unpkg.com/videojs-contrib-hls/dist/videojs-contrib-hls.js"></script>
-
-</body>
-</html>
-```
-
-이제 웹사이트에서 flash 를 지원하지 않아 rmtp로 받아도 재생시킬수가 없다......
-그래서 hls 도전중
+<img width="668" alt="image" src="https://user-images.githubusercontent.com/52357235/200565018-aa2d3b87-641a-4322-ae4c-d652386e3a18.png">
