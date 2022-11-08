@@ -2,6 +2,9 @@
 
 ## Nginx install
 
+// NGINX index.html 주소
+cd /usr/share/nginx/html
+
 [참고 사이트](https://facsiaginsa.com/nginx/adaptive-bitrate-streaming-server-nginx-ubuntu) </br>
 
 Nginx 종속성 설치
