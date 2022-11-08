@@ -225,4 +225,6 @@ server {
 	}
 ```
 
+<img width="520" alt="image" src="https://user-images.githubusercontent.com/52357235/200567775-fc77081d-345b-421a-97b7-d0a96aa99d4a.png">
+
 <img width="1277" alt="image" src="https://user-images.githubusercontent.com/52357235/200567245-3b35b271-cd64-430c-b8f3-94e35d90d21b.png">
