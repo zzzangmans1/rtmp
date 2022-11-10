@@ -271,3 +271,11 @@ server {
 ![image](https://user-images.githubusercontent.com/52357235/200588545-8324f99d-b382-47fb-b2b9-1368b174a41a.png)
 
 <img width="464" alt="image" src="https://user-images.githubusercontent.com/52357235/200588631-d042d340-8848-4835-a50a-a8198d1c21cf.png">
+
+[Streaming Android]
+
+<img width="540" alt="image" src="https://user-images.githubusercontent.com/52357235/200850187-9150e6e0-f37a-4641-8636-cd41678c6133.png">
+
+[Player Andorid]
+
+<img width="486" alt="image" src="https://user-images.githubusercontent.com/52357235/200850534-89cdc8de-a86b-44d1-9dae-5485404f5be8.png">
