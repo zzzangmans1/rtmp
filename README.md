@@ -324,7 +324,7 @@ server {
 
 <body>
 
-    <video id="video" loop playsinline autoplay></video>
+    <video id="video" controls></video>
 
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
