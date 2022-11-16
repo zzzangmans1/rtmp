@@ -368,3 +368,9 @@ server {
 [Player Andorid]
 
 <img width="486" alt="image" src="https://user-images.githubusercontent.com/52357235/200850534-89cdc8de-a86b-44d1-9dae-5485404f5be8.png">
+
+
+[플레이어 어플](https://github.com/zzzangmans1/nginx-rtmp-streamplayer)
+위 플레이어 어플에서 MainActivity에서 loadUrl에서 자신의 ip로 변경해주시면 됩니다.
+
+![image](https://user-images.githubusercontent.com/52357235/202213976-962c036e-248b-4ec4-98d8-dd2ec0ec8322.png)
