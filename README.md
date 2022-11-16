@@ -239,32 +239,43 @@ server {
 ```
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset=utf-8 />
-<title>hls.js</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <title>player</title>
 </head>
+
 <body>
-<video controls autoplay id="video-player"></video>
-<script>
-	var video = document.getElementById('video-player');
-	var videoSrc = 'http://{m3u8의 주소}.m3u8';
-	//
-	// First check for native browser HLS support
-	//
-	if (video.canPlayType('application/vnd.apple.mpegurl')) {
-		video.src = videoSrc;
-		//
-		// If no native HLS support, check if hls.js is supported
-		//
-	} else if (Hls.isSupported()) {
-		var hls = new Hls();
-		hls.loadSource(videoSrc);
-		hls.attachMedia(video);
-	}
-</script>
+
+    <video id="video" loop playsinline autoplay muted></video>
+
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+    <script>
+        var video = document.getElementById('video');
+        var videoSrc = 'https://ondu.com:8088/hls/obs_stream.m3u8';
+        if (Hls.isSupported()) {
+            var hls = new Hls();
+            hls.loadSource(videoSrc);
+            hls.attachMedia(video);
+            hls.on(Hls.Events.MANIFEST_PARSED, function () {
+                video.muted = 'muted';
+                video.autoplay = 'autoplay';
+                video.playsinline = 'true';
+                video.play();
+            });
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            video.src = videoSrc;
+            video.addEventListener('loadedmetadata', function () {
+                video.muted = 'muted';
+                video.autoplay = 'autoplay';
+                video.playsinline = 'true';
+                video.play();
+            });
+        }
+    </script>
+
 </body>
+
 </html>
 ```
 
