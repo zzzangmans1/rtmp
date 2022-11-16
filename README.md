@@ -74,6 +74,8 @@ nano nginx.conf
 ```
 
 이 구성을 구성 파일에 추가
+
+저의 nginx.conf 
 ```
 user www-data;
 worker_processes auto;
@@ -118,6 +120,82 @@ http {
     }
 }
 
+```
+```
+user www-data;
+worker_processes auto;
+pid /run/nginx.pid;
+include /etc/nginx/modules-enabled/*.conf;
+
+events {
+        worker_connections 768;
+        # multi_accept on;
+}
+ 
+rtmp {
+        server {
+                listen 1935;
+                chunk_size 4096;
+
+                application live { # stream
+                        live on;
+                        record off;
+
+                        #HLS
+                        hls on;
+                        hls_path /etc/nginx/live;
+                        hls_fragment 3;
+                        hls_playlist_length 60;
+                }
+        }
+}
+
+http {
+        server {
+                listen 80;
+                server_name localhost;
+                location /live {
+                        add_header 'Access-Control-Allow-Origin' '*' always;
+                        add_header 'Access-Control-Expose-Headers' 'Content-Length';
+
+                        if ($request_method = 'OPTIONS') {
+                                add_header 'Access-Control-Allow-Origin' '*';
+                                add_header 'Access-Control-Max-Age' 17280000;
+                                add_header 'Content-Type' 'text/plain charset=UTF-8';
+                                add_header 'Content-Length' 0;
+                                return 204;
+                        }
+                        types {
+                                application/vnd.apple.mpegurl m3u8;
+                                video/mp2t ts;
+                        }
+                        root /etc/nginx;
+                        add_header Cache-Control no-cache;
+                }
+        }
+        server {
+                listen 8080;
+                root /etc/nginx;
+
+                location /live {
+                        add_header 'Access-Control-Allow-Origin' '*' always;
+                        add_header 'Access-Control-Expose-Headers' 'Content-Length';
+
+                        if ($request_method = 'OPTIONS') {
+                                add_header 'Access-Control-Allow-Origin' '*';
+                                add_header 'Access-Control-Max-Age' 17280000;
+                                add_header 'Content-Type' 'text/plain charset=UTF-8';
+                                add_header 'Content-Length' 0;
+                                return 204;
+                        }
+                        types {
+                                application/vnd.apple.mpegurl m3u8;
+                                video/mp2t ts;
+                        }
+                        add_header Cache-Control no-cache;
+                }
+        }
+}
 ```
 구성 완료후 
 ```
