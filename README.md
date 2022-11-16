@@ -246,19 +246,19 @@ server {
 
 <body>
 
-    <video id="video" loop playsinline autoplay muted></video>
+    <video id="video" loop playsinline autoplay></video>
 
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
     <script>
         var video = document.getElementById('video');
-        var videoSrc = 'https://ondu.com:8088/hls/obs_stream.m3u8';
+        var videoSrc = 'http://10.211.55.4:8080/live/1234.m3u8';
+        
         if (Hls.isSupported()) {
             var hls = new Hls();
             hls.loadSource(videoSrc);
             hls.attachMedia(video);
             hls.on(Hls.Events.MANIFEST_PARSED, function () {
-                video.muted = 'muted';
                 video.autoplay = 'autoplay';
                 video.playsinline = 'true';
                 video.play();
@@ -266,7 +266,6 @@ server {
         } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
             video.src = videoSrc;
             video.addEventListener('loadedmetadata', function () {
-                video.muted = 'muted';
                 video.autoplay = 'autoplay';
                 video.playsinline = 'true';
                 video.play();
@@ -277,6 +276,7 @@ server {
 </body>
 
 </html>
+
 ```
 
 ![image](https://user-images.githubusercontent.com/52357235/200588545-8324f99d-b382-47fb-b2b9-1368b174a41a.png)
