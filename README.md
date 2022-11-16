@@ -79,51 +79,6 @@ nano nginx.conf
 ```
 user www-data;
 worker_processes auto;
-worker_rlimit_nofile 8192;
-pid /run/nginx.pid;
-rtmp_auto_push on;
-
-events {
-    worker_connections 4096;
-}
-
-rtmp {
-    server {
-        listen 1935;
-        chunk_size 4096;
-        max_message 1M;
-
-        application live {
-            live on;
-            hls on;
-            hls_nested on;
-            hls_path /etc/nginx/live;
-
-            hls_fragment 6s;
-            hls_playlist_length 30s;
-        }
-    }
-}
-
-http {
-    server {
-        listen 8080;
-        root /etc/nginx;
-
-        location /live {
-            types {
-                application/vnd.apple.mpegurl m3u8;
-                video/mp2t ts;
-            }
-            add_header Cache-Control no-cache;
-        }
-    }
-}
-
-```
-```
-user www-data;
-worker_processes auto;
 pid /run/nginx.pid;
 include /etc/nginx/modules-enabled/*.conf;
 
