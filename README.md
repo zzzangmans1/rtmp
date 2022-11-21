@@ -83,32 +83,40 @@ pid /run/nginx.pid;
 include /etc/nginx/modules-enabled/*.conf;
 
 events {
-        worker_connections 768;
-        # multi_accept on;
+	worker_connections 1024;
+	# multi_accept on;
 }
- 
+
+# 영상을 미디어 서버로 보낼때 사용하는 프로토콜
+# nginx rtmp 설정
 rtmp {
         server {
+		# rtmp 포트 번호
                 listen 1935;
+		
+		# rtmp 가 4k 블록으로 데이터 전송
                 chunk_size 4096;
-
-                application live { # stream
+		
+		
+		#  HLS 형식으로 변환 (트랜스먹싱 혹은 패킷타이징이라고 함)		
+		# 스트림이 기본적으로 디스크에 저장안되게 처리
+                application live {
                         live on;
                         record off;
-
-                        #HLS
-                        hls on;
-                        hls_path /etc/nginx/live;
-                        hls_fragment 3;
-                        hls_playlist_length 60;
-                }
+		 	hls on;
+		 	hls_path /etc/nginx/live;
+		 	hls_fragment 3;
+		 	hls_playlist_length 60;
+		 }
         }
 }
+
 
 http {
         server {
                 listen 80;
                 server_name localhost;
+                
                 location /live {
                         add_header 'Access-Control-Allow-Origin' '*' always;
                         add_header 'Access-Control-Expose-Headers' 'Content-Length';
@@ -125,28 +133,6 @@ http {
                                 video/mp2t ts;
                         }
                         root /etc/nginx;
-                        add_header Cache-Control no-cache;
-                }
-        }
-        server {
-                listen 8080;
-                root /etc/nginx;
-
-                location /live {
-                        add_header 'Access-Control-Allow-Origin' '*' always;
-                        add_header 'Access-Control-Expose-Headers' 'Content-Length';
-
-                        if ($request_method = 'OPTIONS') {
-                                add_header 'Access-Control-Allow-Origin' '*';
-                                add_header 'Access-Control-Max-Age' 17280000;
-                                add_header 'Content-Type' 'text/plain charset=UTF-8';
-                                add_header 'Content-Length' 0;
-                                return 204;
-                        }
-                        types {
-                                application/vnd.apple.mpegurl m3u8;
-                                video/mp2t ts;
-                        }
                         add_header Cache-Control no-cache;
                 }
         }
@@ -285,7 +271,7 @@ server {
 
     <script>
         var video = document.getElementById('video');
-        var videoSrc = 'http://10.211.55.4:8080/live/1234.m3u8';
+        var videoSrc = 'http://10.211.55.4/live/1234.m3u8';
         
         if (Hls.isSupported()) {
             var hls = new Hls();
