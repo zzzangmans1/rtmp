@@ -202,6 +202,8 @@ service nginx start
 
 웹사이트에서 HLS 재생코드
 videoSrc는 자신의 플레이어 웹사이트 ip/directory/filename.m3u8
+제 기준의 웹사이트 경로는 /usr/share/nginx/html/index.html 입니다.
+
 ```
 <!DOCTYPE html>
 <html>
